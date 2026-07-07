@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#1E1E22"/>
+  <rect x="72" y="72" width="1056" height="486" rx="36" fill="#2E2E34"/>
+  <rect x="116" y="116" width="104" height="104" rx="24" fill="#4FA8E8"/>
+  <path d="M138 180h8.5a12.8 12.8 0 0 1 25.1 0h16a12.8 12.8 0 0 1 25.1 0h4.3v-16.7c0-4.1-2.7-7.8-6.7-9l-17.3-5.3-12.8-15.2a13.2 13.2 0 0 0-10.1-5.2h-21c-4.5 0-8.6 2.7-10.5 6.8l-8.2 18.3v18.7c0 4.2 2.7 7.6 7.6 7.6Z" fill="#1E1E22"/>
+  <circle cx="160" cy="182" r="8" fill="#4FA8E8" stroke="#1E1E22" stroke-width="6"/>
+  <circle cx="201" cy="182" r="8" fill="#4FA8E8" stroke="#1E1E22" stroke-width="6"/>
+  <text x="116" y="310" fill="#F8FAFC" font-family="Manrope, Arial, sans-serif" font-size="86" font-weight="800">Zdaj B</text>
+  <text x="116" y="382" fill="#A1A1AA" font-family="Manrope, Arial, sans-serif" font-size="34" font-weight="600">Trening teorii prawa jazdy kat. B</text>
+  <text x="116" y="446" fill="#CBD5E1" font-family="Manrope, Arial, sans-serif" font-size="28">Pytania, egzamin, wideo, trudne pytania i statystyki.</text>
+  <rect x="844" y="392" width="214" height="58" rx="18" fill="#4FA8E8"/>
+  <text x="884" y="430" fill="#1E1E22" font-family="Manrope, Arial, sans-serif" font-size="25" font-weight="800">zdajb.pl</text>
+</svg>
