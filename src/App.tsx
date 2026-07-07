@@ -657,7 +657,7 @@ function AccountCard({
     if (!response) return setVerifyMessage("Brak połączenia z serwerem.");
     const data = await response.json().catch(() => null);
     if (!response.ok) return setVerifyMessage(data?.message ?? "Nie udało się wysłać linku.");
-    setVerifyMessage(data?.sent ? "Link potwierdzający został wysłany." : "W trybie lokalnym użyj linku testowego.");
+    setVerifyMessage(data?.sent ? "Link potwierdzający został wysłany." : "Nie udało się wysłać wiadomości. Spróbuj ponownie później.");
     if (data?.devLink) setVerifyLink(data.devLink);
   }
 
@@ -860,7 +860,7 @@ function AccountView({
     if (!response) return setMessage("Brak połączenia z serwerem.");
     const data = await response.json().catch(() => null);
     if (!response.ok) return setMessage(data?.message ?? "Nie udało się wysłać linku.");
-    setMessage(data?.sent ? "Link potwierdzający został wysłany." : "W trybie lokalnym użyj linku testowego.");
+    setMessage(data?.sent ? "Link potwierdzający został wysłany." : "Nie udało się wysłać wiadomości. Spróbuj ponownie później.");
     if (data?.devLink) setVerifyLink(data.devLink);
   }
 
