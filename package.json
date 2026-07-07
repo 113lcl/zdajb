@@ -50,9 +50,7 @@
     "stripe": "^22.3.0",
     "tsx": "latest",
     "vite-plugin-pwa": "latest",
-    "xlsx": "latest"
-  },
-  "devDependencies": {
+    "xlsx": "latest",
     "@types/express": "latest",
     "@types/node": "latest",
     "@types/nodemailer": "^8.0.1",
