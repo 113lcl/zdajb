@@ -33,8 +33,7 @@
     "media:inventory": "node scripts/media-inventory.mjs",
     "import:xlsx": "tsx scripts/import-xlsx.ts",
     "init:db": "node scripts/create-db.cjs",
-    "convert:video": "node scripts/convert-wmv-to-mp4.mjs",
-    "postinstall": "node scripts/cpanel-postinstall.mjs"
+    "convert:video": "node scripts/convert-wmv-to-mp4.mjs"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
