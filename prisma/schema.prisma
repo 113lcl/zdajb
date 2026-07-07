@@ -1,0 +1,230 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Question {
+  id            Int             @id
+  text          String
+  category      String          @default("Bez kategorii")
+  mediaPath     String?
+  mediaType     String?
+  correctAnswer String
+  options       String?
+  weight        Int             @default(1)
+  kind          String          @default("SPECIALIST")
+  explanation   String?
+  answers       AttemptAnswer[]
+  difficult     DifficultQuestion?
+  userProgress  UserQuestionProgress[]
+  userDifficult UserDifficultQuestion[]
+
+  @@index([category])
+  @@index([weight])
+  @@index([kind])
+}
+
+model Attempt {
+  id         Int             @id @default(autoincrement())
+  userId     String?
+  mode       String
+  startedAt  DateTime        @default(now())
+  finishedAt DateTime?
+  score      Int             @default(0)
+  passed     Boolean         @default(false)
+  answers    AttemptAnswer[]
+  user       User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+}
+
+model AttemptAnswer {
+  id               Int      @id @default(autoincrement())
+  attemptId        Int
+  questionId       Int
+  isCorrect        Boolean
+  timeSpentSeconds Int      @default(0)
+  selectedAnswer   String?
+  attempt          Attempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question         Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([attemptId])
+  @@index([questionId])
+}
+
+model DifficultQuestion {
+  questionId     Int      @id
+  addedAt        DateTime @default(now())
+  timesReviewed  Int      @default(0)
+  lastReviewedAt DateTime?
+  mastered       Boolean  @default(false)
+  correctStreak  Int      @default(0)
+  nextReviewAt   DateTime @default(now())
+  question       Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model StatsByCategory {
+  category      String @id
+  totalAnswered Int    @default(0)
+  totalCorrect  Int    @default(0)
+}
+
+model User {
+  id               String                 @id @default(cuid())
+  email            String                 @unique
+  name             String?
+  passwordHash     String
+  role             String                 @default("USER")
+  emailVerifiedAt  DateTime?
+  termsAcceptedAt  DateTime?
+  privacyAcceptedAt DateTime?
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  lastLoginAt      DateTime?
+  sessions         Session[]
+  authTokens       AuthToken[]
+  accessGrants     AccessGrant[]
+  payments         Payment[]
+  attempts         Attempt[]
+  questionProgress UserQuestionProgress[]
+  difficult        UserDifficultQuestion[]
+  statsByCategory  UserStatsByCategory[]
+
+  @@index([createdAt])
+  @@index([role])
+}
+
+model AuthToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  type      String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([type])
+  @@index([expiresAt])
+}
+
+model PlanConfig {
+  code        String   @id
+  name        String
+  days        Int
+  amount      Int
+  currency    String   @default("PLN")
+  featured    Boolean  @default(false)
+  active      Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  updatedAt   DateTime @updatedAt
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  tokenHash    String   @unique
+  createdAt    DateTime @default(now())
+  expiresAt    DateTime
+  lastSeenAt   DateTime @default(now())
+  userAgent    String?
+  ipAddress    String?
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model AccessGrant {
+  id          String    @id @default(cuid())
+  userId      String
+  planCode    String
+  source      String    @default("manual")
+  startsAt    DateTime  @default(now())
+  expiresAt   DateTime
+  createdAt   DateTime  @default(now())
+  cancelledAt DateTime?
+  paymentId   String?
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payment     Payment?  @relation(fields: [paymentId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([planCode])
+}
+
+model Payment {
+  id                 String        @id @default(cuid())
+  userId             String
+  provider           String        @default("stripe")
+  providerPaymentId  String?       @unique
+  providerCheckoutId String?       @unique
+  planCode           String
+  amount             Int
+  currency           String        @default("PLN")
+  status             String        @default("pending")
+  createdAt          DateTime      @default(now())
+  paidAt             DateTime?
+  rawPayload         String?
+  user               User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessGrants       AccessGrant[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([planCode])
+}
+
+model UserQuestionProgress {
+  id               String    @id @default(cuid())
+  userId           String
+  questionId       Int
+  attempts         Int       @default(0)
+  correctAttempts  Int       @default(0)
+  wrongAttempts    Int       @default(0)
+  lastAnswer       String?
+  lastIsCorrect    Boolean?
+  lastAnsweredAt   DateTime?
+  totalTimeSeconds Int       @default(0)
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question         Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questionId])
+  @@index([userId])
+  @@index([questionId])
+}
+
+model UserDifficultQuestion {
+  id             String   @id @default(cuid())
+  userId         String
+  questionId     Int
+  addedAt        DateTime @default(now())
+  timesReviewed  Int      @default(0)
+  lastReviewedAt DateTime?
+  mastered       Boolean  @default(false)
+  correctStreak  Int      @default(0)
+  nextReviewAt   DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question       Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questionId])
+  @@index([userId])
+  @@index([questionId])
+  @@index([nextReviewAt])
+}
+
+model UserStatsByCategory {
+  id            String @id @default(cuid())
+  userId        String
+  category      String
+  totalAnswered Int    @default(0)
+  totalCorrect  Int    @default(0)
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, category])
+  @@index([userId])
+}
