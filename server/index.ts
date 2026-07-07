@@ -147,6 +147,23 @@ const examPlan = [
   { kind: "SPECIALIST", weight: 1, take: 2 }
 ];
 
+async function seedQuestionsIfEmpty() {
+  const count = await prisma.question.count();
+  if (count > 0) return;
+  const seedPath = path.join(dirname, "questions-seed.json");
+  if (!fs.existsSync(seedPath)) {
+    console.warn("Question seed file is missing.");
+    return;
+  }
+  const questions = JSON.parse(fs.readFileSync(seedPath, "utf8"));
+  if (!Array.isArray(questions) || !questions.length) return;
+  for (let index = 0; index < questions.length; index += 250) {
+    const batch = questions.slice(index, index + 250);
+    await (prisma.question.createMany as any)({ data: batch, skipDuplicates: true });
+  }
+  console.log(`Seeded ${questions.length} questions.`);
+}
+
 function shuffle<T>(items: T[]) {
   return [...items].sort(() => Math.random() - 0.5);
 }
@@ -1190,6 +1207,8 @@ if (isProduction) {
     app.get(/.*/, (_req, res) => res.sendFile(path.join(distPath, "index.html")));
   }
 }
+
+seedQuestionsIfEmpty().catch((error) => console.error("Question seed failed", error));
 
 app.listen(port, host, () => {
   console.log(`API listening on http://${host}:${port}`);
