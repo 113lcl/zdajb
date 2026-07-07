@@ -336,14 +336,19 @@ async function sendMail(to: string, subject: string, text: string) {
   const host = process.env.SMTP_HOST;
   const from = process.env.SMTP_FROM;
   if (!host || !from) return { sent: false };
-  const transporter = nodemailer.createTransport({
-    host,
-    port: Number(process.env.SMTP_PORT ?? 587),
-    secure: process.env.SMTP_SECURE === "true",
-    auth: process.env.SMTP_USER ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS ?? "" } : undefined
-  });
-  await transporter.sendMail({ from, to, subject, text });
-  return { sent: true };
+  try {
+    const transporter = nodemailer.createTransport({
+      host,
+      port: Number(process.env.SMTP_PORT ?? 587),
+      secure: process.env.SMTP_SECURE === "true",
+      auth: process.env.SMTP_USER ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS ?? "" } : undefined
+    });
+    await transporter.sendMail({ from, to, subject, text });
+    return { sent: true };
+  } catch (error) {
+    console.error("Mail delivery failed", error);
+    return { sent: false };
+  }
 }
 
 function appLink(pathname: string, params: Record<string, string>, baseUrl = publicAppUrl) {
