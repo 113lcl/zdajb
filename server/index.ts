@@ -38,8 +38,6 @@ function validateProductionEnv() {
     "DATABASE_URL",
     "PUBLIC_APP_URL",
     "ADMIN_EMAILS",
-    "STRIPE_SECRET_KEY",
-    "STRIPE_WEBHOOK_SECRET",
     "SMTP_HOST",
     "SMTP_USER",
     "SMTP_PASS",

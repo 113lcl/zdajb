@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/zdajb/zdajb-app/
+    - /bin/rsync -a --delete --exclude='.git' --exclude='.cpanel.yml' --exclude='node_modules' --exclude='.env' --exclude='public/media' ./ $DEPLOYPATH

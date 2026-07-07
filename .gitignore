@@ -6,7 +6,6 @@ Multimedia_do_pyta*/
 Multimedia_do_pytań_-_cz_2_02042026/
 *.tsbuildinfo
 vite.config.js
-server/*.js
 scripts/*.js
 !scripts/*.cjs
 !scripts/*.mjs
