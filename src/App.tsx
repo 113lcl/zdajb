@@ -2646,7 +2646,7 @@ export default function App() {
       <div className="mx-auto flex max-w-6xl flex-col gap-4">
         <header className="flex flex-col gap-3 rounded-panel bg-surface-900 p-3 shadow-soft md:flex-row md:items-center md:justify-between">
           <button
-            className="flex items-center gap-3 rounded-card px-1 py-1 text-left transition hover:bg-surface-800 focus:outline-none focus:ring-2 focus:ring-accent/60"
+            className="flex items-center gap-3 rounded-card px-1 py-1 text-left transition hover:bg-surface-800 focus:outline-none"
             onClick={() => navigate("home")}
             aria-label="Przejdź do menu głównego"
           >
