@@ -1541,22 +1541,64 @@ function HomeView({
   onLogout: () => void;
 }) {
   const hasFullAccess = Boolean(access.hasActiveAccess || user?.role === "ADMIN");
+  const proofItems = [
+    { label: "Baza kat. B", value: "2138 pytań", text: "pytania do treningu teorii, stan: lipiec 2026" },
+    { label: "Symulacja WORD", value: "32 pytania", text: "20 podstawowych i 12 specjalistycznych" },
+    { label: "Próg zaliczenia", value: "68/74 pkt", text: "punktacja jak w trybie egzaminacyjnym" }
+  ];
+  const benefits = [
+    "Codzienny trening bez materiałów pobocznych: pytanie, odpowiedź, wynik.",
+    "Tryb egzaminu z timerem, jednym odtworzeniem wideo i blokadą powrotu.",
+    "Historia podejść, trudne pytania i statystyki pokazujące słabe kategorie."
+  ];
+  const faq = [
+    {
+      question: "Czy mogę zacząć bez konta?",
+      answer: "Tak. Darmowy trening pozwala sprawdzić działanie strony i rozwiązać limit pytań dziennie. Konto zapisuje postęp i historię nauki."
+    },
+    {
+      question: "Co odblokowuje pełny dostęp?",
+      answer: "Pełny dostęp usuwa dzienny limit treningu i włącza egzamin, trudne pytania, historię wyników oraz statystyki przygotowania."
+    },
+    {
+      question: "Czy płatność odnawia się automatycznie?",
+      answer: "Nie. Kupujesz dostęp na wybrany okres: 1 dzień, 7 dni, 30 dni albo 90 dni."
+    }
+  ];
 
   return (
     <div className="grid gap-4 xl:grid-cols-[1fr_360px]">
       <Card className="space-y-7">
-        <div className="space-y-4">
-          <div>
-            <p className="text-sm text-zinc-400">Trening teorii kat. B</p>
-            <h2 className="mt-2 max-w-3xl text-4xl font-extrabold leading-tight text-zinc-50">Ćwicz pytania, symuluj egzamin i wracaj do błędów.</h2>
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-400">Prosty panel do przygotowania przed teorią: bez materiałów auto-szkoły, bez nadmiaru treści, tylko pytania, wynik i rzeczy do poprawy.</p>
+        <div className="grid gap-6 lg:grid-cols-[1fr_260px] lg:items-start">
+          <div className="space-y-4">
+            <p className="text-sm font-semibold text-accent">Testy na prawo jazdy kat. B</p>
+            <h2 className="max-w-3xl text-4xl font-extrabold leading-tight text-zinc-50 md:text-5xl">
+              Przygotuj się do teorii szybciej: pytania, egzamin i powtórka błędów w jednym miejscu.
+            </h2>
+            <p className="max-w-2xl text-sm leading-6 text-zinc-300">
+              Zdaj B to prosty trening teorii kategorii B: aktualna baza pytań, tryb zgodny z formatem egzaminu WORD, materiały wideo, statystyki i lista trudnych pytań.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Button icon={<Play size={18} />} onClick={() => onSelect("training")}>Rozpocznij darmowy test</Button>
+              <Button tone="ghost" icon={<CreditCard size={18} />} onClick={() => onSelect("account")}>Zobacz ceny</Button>
+            </div>
+          </div>
+          <div className="rounded-card border border-accent/35 bg-accent/10 p-4">
+            <p className="text-sm font-semibold text-accent">Dlaczego warto?</p>
+            <ul className="mt-3 space-y-3 text-sm leading-5 text-zinc-300">
+              {benefits.map((item) => <li key={item} className="flex gap-2"><CheckCircle2 className="mt-0.5 shrink-0 text-success" size={16} />{item}</li>)}
+            </ul>
           </div>
         </div>
 
         <div className="grid gap-3 md:grid-cols-3">
-          <div className="rounded-card bg-surface-900 p-4"><p className="text-sm text-zinc-400">Baza kat. B</p><p className="mt-2 text-3xl font-bold text-zinc-50">2138</p></div>
-          <div className="rounded-card bg-surface-900 p-4"><p className="text-sm text-zinc-400">Egzamin</p><p className="mt-2 text-3xl font-bold text-accent">32</p></div>
-          <div className="rounded-card bg-surface-900 p-4"><p className="text-sm text-zinc-400">Próg</p><p className="mt-2 text-3xl font-bold text-success">68 pkt</p></div>
+          {proofItems.map((item) => (
+            <div key={item.label} className="rounded-card bg-surface-900 p-4">
+              <p className="text-sm text-zinc-400">{item.label}</p>
+              <p className="mt-2 text-3xl font-bold text-zinc-50">{item.value}</p>
+              <p className="mt-2 text-xs leading-5 text-zinc-500">{item.text}</p>
+            </div>
+          ))}
         </div>
 
         <div className="grid gap-3 md:grid-cols-2">
@@ -1568,6 +1610,19 @@ function HomeView({
             <div className="flex items-center gap-3 text-zinc-50"><TimerReset size={22} className="text-accent" /><span className="font-bold">{hasFullAccess ? "Uruchom egzamin" : "Odblokuj egzamin"}</span></div>
             <p className="mt-2 text-sm text-zinc-400">Symulacja z timerem, punktacją i zasadami wideo.</p>
           </button>
+        </div>
+
+        <div className="rounded-card border border-zinc-700/70 bg-surface-900 p-5">
+          <div className="grid gap-5 md:grid-cols-[1fr_1fr]">
+            <div>
+              <p className="text-sm font-semibold text-zinc-50">Darmowo</p>
+              <p className="mt-2 text-sm leading-6 text-zinc-400">Limit pytań treningowych dziennie, podgląd działania strony i możliwość rozpoczęcia nauki bez płatności.</p>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-accent">Pełny dostęp</p>
+              <p className="mt-2 text-sm leading-6 text-zinc-400">Trening bez limitu, egzamin, trudne pytania, statystyki, historia wyników i zapis postępów na koncie.</p>
+            </div>
+          </div>
         </div>
 
         <div className="grid gap-3 md:grid-cols-3">
@@ -1587,6 +1642,21 @@ function HomeView({
         </div>
 
         <SuccessHistory user={user} access={access} onSelect={onSelect} />
+
+        <div className="space-y-3">
+          <div>
+            <p className="text-sm text-zinc-400">Najczęstsze pytania</p>
+            <h3 className="mt-1 text-2xl font-extrabold text-zinc-50">FAQ przed rozpoczęciem nauki</h3>
+          </div>
+          <div className="grid gap-3">
+            {faq.map((item) => (
+              <div key={item.question} className="rounded-card border border-zinc-700/70 bg-surface-900 p-4">
+                <p className="font-semibold text-zinc-100">{item.question}</p>
+                <p className="mt-2 text-sm leading-6 text-zinc-400">{item.answer}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </Card>
 
       <AccountCard
