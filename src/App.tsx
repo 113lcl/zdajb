@@ -1659,13 +1659,37 @@ function HomeView({
         </div>
       </Card>
 
-      <AccountCard
-        user={user}
-        access={access}
-        onAuth={onAuth}
-        onLogout={onLogout}
-        onPricing={() => onSelect("account")}
-      />
+      <div className="space-y-4">
+        <AccountCard
+          user={user}
+          access={access}
+          onAuth={onAuth}
+          onLogout={onLogout}
+          onPricing={() => onSelect("account")}
+        />
+        <Card className="space-y-4">
+          <div>
+            <p className="text-sm text-zinc-400">Plan przygotowania</p>
+            <h3 className="mt-1 text-xl font-extrabold text-zinc-50">10 minut dziennie</h3>
+            <p className="mt-2 text-sm leading-6 text-zinc-400">
+              Najlepszy rytm przed teorią: krótki trening, analiza błędów i jedna pełna symulacja co kilka dni.
+            </p>
+          </div>
+          <div className="space-y-3">
+            {[
+              { title: "Dziś", text: "Rozwiąż serię pytań i zapisz błędy." },
+              { title: "Po treningu", text: "Wróć do trudnych pytań, gdy masz pełny dostęp." },
+              { title: "Przed egzaminem", text: "Zrób symulację 32 pytań z timerem." }
+            ].map((item) => (
+              <div key={item.title} className="rounded-card border border-zinc-700/70 bg-surface-900 px-4 py-3">
+                <p className="text-sm font-semibold text-zinc-100">{item.title}</p>
+                <p className="mt-1 text-xs leading-5 text-zinc-400">{item.text}</p>
+              </div>
+            ))}
+          </div>
+          <Button className="w-full" tone="ghost" icon={<BookOpenCheck size={17} />} onClick={() => onSelect("training")}>Przejdź do treningu</Button>
+        </Card>
+      </div>
     </div>
   );
 }
