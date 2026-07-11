@@ -2645,10 +2645,14 @@ export default function App() {
     <main className="min-h-screen bg-surface-950 px-3 py-3 text-zinc-100 md:px-6">
       <div className="mx-auto flex max-w-6xl flex-col gap-4">
         <header className="flex flex-col gap-3 rounded-panel bg-surface-900 p-3 shadow-soft md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-3">
+          <button
+            className="flex items-center gap-3 rounded-card px-1 py-1 text-left transition hover:bg-surface-800 focus:outline-none focus:ring-2 focus:ring-accent/60"
+            onClick={() => navigate("home")}
+            aria-label="Przejdź do menu głównego"
+          >
             <div className="flex h-12 w-12 items-center justify-center rounded-card bg-accent text-surface-950"><Car size={26} /></div>
             <div><p className="text-sm text-zinc-400">Trening teorii kat. B</p><h1 className="text-2xl font-extrabold tracking-normal text-zinc-50">Zdaj B</h1></div>
-          </div>
+          </button>
           <nav className="grid grid-cols-3 gap-2 md:flex">
             {visibleNav.map((item) => {
               const Icon = item.icon;
