@@ -1013,7 +1013,9 @@ app.get("/api/exam", async (req, res) => {
   const auth = await requirePremium(req, res);
   if (!auth) return;
   const groups = await Promise.all(examPlan.map((item) => getPool(item.kind, item.weight, item.take)));
-  res.json({ passScore: 68, maxScore: 74, questions: shuffle(groups.flat()) });
+  const basicQuestions = shuffle(groups.slice(0, 3).flat());
+  const specialistQuestions = shuffle(groups.slice(3).flat());
+  res.json({ passScore: 68, maxScore: 74, questions: [...basicQuestions, ...specialistQuestions] });
 });
 
 app.post("/api/difficult/:questionId", async (req, res) => {
